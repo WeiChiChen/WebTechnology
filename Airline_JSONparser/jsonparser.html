@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Airlines Information</title>
+    <link rel='stylesheet' type="text/css" href='hw4_qwer4rfv.css'>
+
+</head>
+<body>
+    <!-- Script -->
+    <script type="text/javascript">
+
+        function loadXML(url) {
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            } else {// code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.open("GET",url,false);
+            //xmlhttp.responseType="text";
+            xmlhttp.overrideMimeType("application/json");
+            //xmlhttp.send();
+            try {
+                xmlhttp.send(null);//here a xmlhttprequestexception number 101 is thrown
+            } catch(err){
+                /*
+                var hWin = window.open("", "Parse Json Error", "height=300,width=400");
+                hWin.document.write("\nXMLHttprequest error: " + err.description);
+                hWin.document.write("<br />" + "\nInput URL may be invalid!");
+                hWin.document.close();*/
+                alert("\nXMLHttprequest error:" + err.description + "\nPlease input valid URL");
+            }
+
+            var airline_text = xmlhttp.responseText;
+
+            return airline_text;
+        }
+
+        function viewXML(what) {
+            var URL = what.URL.value;
+            var airline_text= loadXML(URL);
+            var airline_json = JSON.parse(airline_text);
+
+            if (!airline_text) {
+                alert("Sorry, Invalid input URL");
+            } else { //else if FF, execute script once XML object has loaded
+                //xmlDoc.onload=generateHTML(xmlDoc);
+                drawTable(airline_json);
+            }
+
+        } // end viewXML
+
+        function drawTable(jsonObj) {
+            if (jsonObj.Mainline.Table.Row.length == 0) {
+                alert("Sorry, your search is no airlines");
+                return;
+            }
+            var hWin = window.open("", "Assignment4", "height=800,width=1200");
+
+            // Header
+            var html = "<title>Airlines</title>";
+            html+= ("<table style=\"width:100%\";border:3px #cccccc solid;\" cellpadding=\"10\" border=\'1\'>");
+            var headjson = jsonObj.Mainline.Table.Header.Data;
+            if (headjson) {
+                html+= "<tr style=\"background-color: #cccccc;\">";
+                if (headjson.length == 6)  {
+                    html += ("<th style=\"width=10%\">" + headjson[0] + "</th>"); // Airline / US Airline
+                    html += ("<th style=\"width=5%\">" + headjson[1] + "</th>");  // IATA
+                    html += ("<th style=\"width=15%\">" + headjson[2] + "</th>");  // Hubs / Main Hubs
+                    html += ("<th style=\"width=20%\">" + headjson[3] + "</th>");  // Notes
+                    html += ("<th style=\"width=20%\">" + headjson[4] + "</th>");  // HomPage / Home Page
+                    html += ("<th style=\"width=30%\">" + headjson[5] + "</th>");  // Plane / Plane with Logo */
+                } else {
+                    for (var i = 0 ; i < headjson.length ; i++) {
+                        html += ("<th>" + headjson[i] + "</th>");
+                    }
+                }
+                html+= "</tr>";
+            }
+            // every row
+            var rowjson = jsonObj.Mainline.Table.Row;
+            if (rowjson) {
+                for (var i = 0 ; i < rowjson.length ; i++) {
+                    html += "<tr>";
+
+                    // Airline / US Airline
+                    var airlinejson = rowjson[i].Airline ? rowjson[i].Airline : rowjson[i]["US Airline"] ;
+                    if (airlinejson) {
+                        html += "<td>" + airlinejson + "</td>";
+                    } else {
+                        html += "<td></td>";
+                    }
+
+                    // IATA
+                    if (rowjson[i].IATA) {
+                        html += "<td>" + rowjson[i].IATA + "</td>";
+                    } else {
+                        html += "<td></td>";
+                    }
+
+                    // Hubs / Main Hubs
+                    var hubjson = rowjson[i].Hubs ? rowjson[i].Hubs : rowjson[i]["Main Hubs"];
+                    if (hubjson) {
+                        html += "<td><ul>";
+                        for (var k = 0 ; k < hubjson.Hub.length ; k++ ) {
+                            html += ("<li>" +  hubjson.Hub[k] + "</li>");
+                        }
+                        html += "</ul></td>";
+
+                    } else {
+                        html += "<td></td>";
+                    }
+
+                    // Notes
+                    if (rowjson[i].Notes) {
+                        html += "<td>" + rowjson[i].Notes + "</td>";
+                    } else {
+                        html += "<td></td>";
+                    }
+
+                    // HomPage / Home Page
+                    var hpjson = rowjson[i].HomePage ? rowjson[i].HomePage : rowjson[i]["Home Page"];
+                    if (hpjson) {
+                        html += ('<td><a href="' + hpjson + '" target="_blank">' + hpjson + '</a></td>');
+                    } else {
+                        html += "<td></td>";
+                    }
+
+                    // Plane / Plane with Logo
+                    var planejson = rowjson[i].Plane ? rowjson[i].Plane : rowjson[i]["Plane with Logo"];
+                    if (planejson) {
+                        html += ('<td><img src="' + planejson + '" style="width:300px;height:200px"></td>');
+                    } else {
+                        html += "<td></td>";
+                    }
+
+                    html += "</tr>";
+                }
+            }
+
+
+            html+=("</table>");
+            hWin.document.write(html);
+
+            hWin.document.close();
+        }
+
+        function writeTest(jsonObj) {
+            var html = "";
+            html += ("xmlDoc is loaded, ready for use<br />");
+
+            return html;
+        }
+
+    </script>
+
+    <!-- Input page-->
+    <div id="input_page" style="margin: 0px auto; text-align: center;">
+        <h1 style="margin-top: 15%">Enter URL for Airlines List JSON File</h1>
+        <form name="myform" method="POST" id="location">
+        <input type="text" name="URL" maxlength="255"
+          size="60" value="airlinelist.json" />
+        <br />
+        <input type="button" name="submit" style="background-color: #cccccc; margin-top: 15px"
+            value="Submit Query" onClick="viewXML(this.form)" />
+        </form>
+    </div>
+    <p id="testfield"></p>
+
+<NOSCRIPT>
+</body>
+</html>

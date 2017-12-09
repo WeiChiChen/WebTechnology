@@ -1,0 +1,137 @@
+/*do not change color of visited link*/
+
+body {
+    background-image:url(http://cs-server.usc.edu:45678/hw/hw8/images/background.png);
+    background-repeat:repeat;
+    background-color: white;
+    -webkit-overflow-scrolling: touch;
+}
+
+a {
+    text-decoration: none;
+}
+a:visited {
+    color: #0000EE;
+    text-decoration: none;
+}
+
+#query-div {
+    box-sizing: border-box;
+    width: 30%;
+    background-color: #f0f0f0;
+    border: 3px solid lightgray;
+    margin: 0 auto;
+}
+
+/* test media query */
+@media (min-width: 401px) {
+    #hrline1 {
+        width: 80%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
+@media (max-width: 400px) {
+    #hrline1 {
+        width: 0%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
+
+
+#infoTable-div {
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+#infoTable {
+    width: 60%;
+    border: 3px solid lightgray;
+    margin: 0 auto;
+}
+
+#infoTable th{
+    width: 30%;
+    text-align: left;
+    background-color: #f0f0f0;
+}
+
+#infoTable td{
+    text-align: center;
+}
+
+#infoChart-div {
+    box-sizing: border-box;
+}
+
+#infoChart {
+    width:60%;
+    height:400px;
+    margin: 0 auto;
+}
+
+#newsTable-div {
+    box-sizing: border-box;
+    margin-top: 10px;
+    text-align: center;
+}
+
+#newsTable {
+    width: 60%;
+    border: 3px solid lightgray;
+    margin: 0 auto;
+    text-align: left;
+    background-color: #f0f0f0;
+}
+
+.changeArrow {
+    max-width: 14px;
+    max-height: 14px;
+}
+
+.half-page {
+    height:600px;
+    margin: 0 auto;
+}
+
+#news_hint {
+    color: #7a7a7a;
+    margin-bottom: 0px;
+}
+
+#newsArrow {
+    margin: 0 auto;
+    max-width: 30px;
+    max-height: 20px;
+}
+
+.glyphicon-star {
+    color: gold;
+}
+
+.news-title {
+    margin-bottom: 20px;
+    font-size: large;
+}
+
+/*details, left right slide*/
+/*https://docs.angularjs.org/api/ng/directive/ngShow#animations*/
+/*https://docs.angularjs.org/api/ng/directive/ngHide*/
+.sec-fav.ng-hide-remove {
+    transform: translateX(100%);
+    transition: all 0.5s linear;
+}
+
+.sec-fav.ng-hide-remove.ng-hide-remove-active {
+    transform: translateX(0);
+}
+
+.sec-stock-detail.ng-hide-remove {
+    transform: translateX(-100%);
+    transition: all 0.5s linear;
+}
+
+.sec-stock-detail.ng-hide-remove.ng-hide-remove-active {
+    transform: translateX(0);
+}
