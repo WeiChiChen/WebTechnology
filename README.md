@@ -6,5 +6,4 @@ And there are also for final android + web service.
 
 Keep improving!
 
-
-### If any license question about the code content, please email me and let me know.
+If any license question about the code content, please email me and let me know.
